@@ -1,13 +1,11 @@
 <?php
-    $telegram = "https://api.telegram.org/bot";
+    // il tuo token
     $token = "5100404136:AAHEr_gwp5d-q6HXP3c9ls-2D_CC0H7WI_w";
-    $url = $telegram.$token."/getMe";
+    $url = "https://api.telegram.org/bot".$token."/getMe";
 
     $request = curl_init($url);
 
     curl_exec($request);
-
-    //ciao sono gay
 
 
 ?>
