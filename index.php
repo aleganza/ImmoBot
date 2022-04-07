@@ -1,11 +1,12 @@
 <?php
-    // il tuo token
-    $token = "5100404136:AAHEr_gwp5d-q6HXP3c9ls-2D_CC0H7WI_w";
-    $url = "https://api.telegram.org/bot".$token."/getUpdates";
+    require('config.php');
 
-    $request = curl_init($url);
-
-    curl_exec($request);
-
-
+    try{
+        $token = "5100404136:AAHEr_gwp5d-q6HXP3c9ls-2D_CC0H7WI_w"; //token
+        $bot = new Telegram($token);
+    
+        $bot->getMe();
+    }catch(ErrorException $e){
+        echo $e->getMessage();
+    }
 ?>
