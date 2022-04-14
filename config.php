@@ -90,17 +90,21 @@
     }
 
     class jsonHandler extends Telegram{
-        // prendi il json di una richiesta
-        function getJson($url){
+        // prendi il json di una richiesta (vecchio json_handler.php)
+        function getWebhookJson(){
+            $json = file_get_contents("php://input");
 
-            $json = file_get_contents($url);
-            file_put_contents("data.log", $json."\n", FILE_APPEND);
+            /* file_put_contents("data.log", $json."\n", FILE_APPEND); */
 
-            return json_decode($json, true); // ritorno il json come variabile php
+            return json_decode($json, true);
         }
-        // prendi l'id di una chat dal json
-        function getChatId($json){
-            return $json["result"][0]["message"]["chat"]["id"];
+        // prendi l'id di una chat dal json (webhook)
+        function getChatId($jsonDecoded){
+            return $jsonDecoded["message"]["chat"]["id"];
+        }
+        // prendi il testo di un messaggio dal json (webhook)
+        function getText($jsonDecoded){
+            return $jsonDecoded["message"]["text"];
         }
     }
 ?>
