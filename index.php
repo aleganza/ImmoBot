@@ -3,7 +3,7 @@
     require('config.php');
 
     try{
-        $ngrokUrl = "https://d80f-82-52-13-195.ngrok.io";
+        $ngrokUrl = "https://ee45-82-52-13-195.ngrok.io";
         
         $bot = new Telegram($token);
         $jsonHandler = new jsonHandler($token);
