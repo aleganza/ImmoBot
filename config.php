@@ -1,28 +1,7 @@
 <?php
     // manda la richiesta al server di telegram
-    function fetchApi($url, $payload = null){
+    function fetchApi($url){
         $req = curl_init($url);
-
-        $options = array(
-            CURLOPT_POST => $payload != null ? true : false,
-            CURLOPT_URL => $url,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 3,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_TIMEOUT => 5 
-          );
-      
-        if($payload != null){
-            $json = json_encode($payload);
-            $options[CURLOPT_HTTPHEADER] = array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($json)
-        );
-            $options[CURLOPT_POSTFIELDS] = $json;
-        }
-    
-        curl_setopt_array($req, $options);
 
         $resp = curl_exec($req);
 
@@ -49,17 +28,17 @@
         function setUrl($method){
             return $this->tUrl."/".$method;
         }
-
+        // getme
         function getMe(){
             $url = $this->setUrl("getMe");
             fetchApi($url);
         }
-
+        // getupdates
         function getUpdates(){
             $url = $this->setUrl("getUpdates");
             fetchApi($url);
         }
-        
+        // invio di un messaggio
         function sendMessage($chatId){
             // dati per inviare il messaggio
             $data = [
@@ -69,26 +48,27 @@
 
             // richiesta per inviare il messaggio
             $url = $this->setUrl("sendMessage?".http_build_query($data));
-
             fetchApi($url);
 
             /* $response = file_get_contents($url); */
         }
-
+        // setting webhook
         function setWebhook ($ngrokUrl){
             $data = [
                 'url' => $ngrokUrl
             ];
 
             $url = $this->setUrl("setWebhook?".http_build_query($data));
-            $payload = array(
-                "url"=>$url
-            );
-
-            fetchApi($url, $payload);
+            fetchApi($url);
+        }
+        // eliminazione webhook
+        function deleteWebhook(){
+            $url = $this->setUrl("deleteWebhook");
+            fetchApi($url);
         }
     }
 
+    // tutte le operazioni eseguibili sui json
     class jsonHandler extends Telegram{
         // prendi il json di una richiesta (vecchio json_handler.php)
         function getWebhookJson(){
