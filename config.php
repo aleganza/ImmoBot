@@ -1,7 +1,29 @@
 <?php
     // manda la richiesta al server di telegram
-    function fetchApi($url){
+    function fetchApi($url, $payload = null){
         $req = curl_init($url);
+
+        $options = array(
+            CURLOPT_POST => $payload != null ? true : false,
+            CURLOPT_URL => $url,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 3,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_TIMEOUT => 5 
+          );
+      
+        if($payload != null){
+            $json = json_encode($payload);
+            $options[CURLOPT_HTTPHEADER] = array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($json)
+        );
+            $options[CURLOPT_POSTFIELDS] = $json;
+        }
+    
+        curl_setopt_array($req, $options);
+
         $resp = curl_exec($req);
 
         if($resp == false){
@@ -31,8 +53,6 @@
         function getMe(){
             $url = $this->setUrl("getMe");
             fetchApi($url);
-
-           
         }
 
         function getUpdates(){
@@ -55,16 +75,21 @@
             /* $response = file_get_contents($url); */
         }
 
-        function setWebHook ($ngrokUrl){
+        function setWebhook ($ngrokUrl){
             $data = [
                 'url' => $ngrokUrl
             ];
 
-            $url = $this->setUrl("setWebHook?".http_build_query($data));
-            fetchApi($url);
+            $url = $this->setUrl("setWebhook?".http_build_query($data));
+            $payload = array(
+                "url"=>$url
+            );
 
-            $this->getJson($url);
+            fetchApi($url, $payload);
         }
+    }
+
+    class jsonHandler extends Telegram{
         // prendi il json di una richiesta
         function getJson($url){
 
@@ -73,7 +98,7 @@
 
             return json_decode($json, true); // ritorno il json come variabile php
         }
-
+        // prendi l'id di una chat dal json
         function getChatId($json){
             return $json["result"][0]["message"]["chat"]["id"];
         }

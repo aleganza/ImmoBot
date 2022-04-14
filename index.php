@@ -1,19 +1,17 @@
 <?php
+    require('token.php'); // inserire token del bot telegram
     require('config.php');
 
     try{
-        $token = "5100404136:AAHEr_gwp5d-q6HXP3c9ls-2D_CC0H7WI_w"; //token
-        $ngrokUrl = "https://0dd0-82-52-13-195.ngrok.io";
+        $ngrokUrl = "https://d80f-82-52-13-195.ngrok.io";
         
         $bot = new Telegram($token);
+        $jsonHandler = new jsonHandler($token);
 
-        /* $bot->getUpdates(); */
-        
-        $url = $bot->setWebHook($ngrokUrl);
+        var_dump($bot->setWebhook($ngrokUrl."/json_handler.php"));
+        $chatId = $jsonHandler->getChatId($json);
 
-        $update = file_get_contents('php://input');
-        $update = json_decode($update, TRUE);
-
+        file_put_contents("data.log", $chatId, FILE_APPEND);
     }catch(ErrorException $e){
         echo $e->getMessage();
     }
