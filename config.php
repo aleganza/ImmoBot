@@ -39,11 +39,11 @@
             fetchApi($url);
         }
         // invio di un messaggio
-        function sendMessage($chatId){
+        function sendMessage($chatId, $msg){
             // dati per inviare il messaggio
             $data = [
                 'chat_id' => $chatId, 
-                'text' => "funziona"
+                'text' => $msg
             ];
 
             // richiesta per inviare il messaggio
