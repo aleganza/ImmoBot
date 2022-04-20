@@ -28,12 +28,26 @@
         function setUrl($method){
             return $this->tUrl."/".$method;
         }
-        // getme
+        // setting webhook
+        function setWebhook ($ngrokUrl){
+            $data = [
+                'url' => $ngrokUrl
+            ];
+
+            $url = $this->setUrl("setWebhook?".http_build_query($data));
+            fetchApi($url);
+        }
+        // eliminazione webhook
+        function deleteWebhook(){
+            $url = $this->setUrl("deleteWebhook");
+            fetchApi($url);
+        }
+        // getMe
         function getMe(){
             $url = $this->setUrl("getMe");
             fetchApi($url);
         }
-        // getupdates
+        // getUpdates
         function getUpdates(){
             $url = $this->setUrl("getUpdates");
             fetchApi($url);
@@ -71,21 +85,6 @@
             ];
 
             $url = $this->setUrl("sendMessage?".http_build_query($data));
-            fetchApi($url);
-
-        }
-        // setting webhook
-        function setWebhook ($ngrokUrl){
-            $data = [
-                'url' => $ngrokUrl
-            ];
-
-            $url = $this->setUrl("setWebhook?".http_build_query($data));
-            fetchApi($url);
-        }
-        // eliminazione webhook
-        function deleteWebhook(){
-            $url = $this->setUrl("deleteWebhook");
             fetchApi($url);
         }
     }
