@@ -52,6 +52,28 @@
 
             /* $response = file_get_contents($url); */
         }
+        function sendKeyboard($chatId, $msg){
+
+            $keyboard = json_encode([
+                'inline_keyboard' => [
+                    [
+                        [
+                        'text' => 'bottone', 'callback_data' => 'ritorno'
+                        ]
+                    ]
+                ]
+            ]);
+            
+            $data = [
+                'chat_id' => $chatId,
+                'text' => $msg,
+                'reply_markup' => $keyboard
+            ];
+
+            $url = $this->setUrl("sendMessage?".http_build_query($data));
+            fetchApi($url);
+
+        }
         // setting webhook
         function setWebhook ($ngrokUrl){
             $data = [

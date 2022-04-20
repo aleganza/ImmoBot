@@ -3,7 +3,7 @@
     require('config.php');
 
     try{
-        $ngrokUrl = "https://a2b0-82-52-13-195.ngrok.io";
+        $ngrokUrl = "https://5e56-82-52-13-195.ngrok.io";
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
@@ -17,14 +17,22 @@
         $msg = $jH->getText($webhookJson) !== "" ? $jH->getText($webhookJson) : "";
 
         switch($msg){
-            // qualunque messaggio
+            // se il comando non esiste / se non è un comando
             default: {
-                $bot->sendMessage($chatId, 'non valido');
+                if ($msg[0] == '/')
+                    $bot->sendMessage($chatId, 'Comando non esistente');
+                
                 break;
             }
             // se il comando è /prova
             case '/prova': {
-                $bot->sendMessage($chatId, 'hai eseguito /prova');
+                /* $bot->sendMessage($chatId, 'hai eseguito /prova'); */
+                $bot->sendKeyboard($chatId, 'bottone di prova');
+                break;
+            }
+            case '/help': {
+                $msg = 'Comandi disponibili:'.PHP_EOL.'/help - Lista dei comandi disponibili'.PHP_EOL.'/prova - prova';
+                $bot->sendMessage($chatId, $msg);
                 break;
             }
         }
