@@ -66,8 +66,8 @@
 
             /* $response = file_get_contents($url); */
         }
+        // invio di una tastiera con bottoni
         function sendKeyboard($chatId, $msg){
-
             $keyboard = json_encode([
                 'inline_keyboard' => [
                     [
@@ -106,6 +106,10 @@
         // prendi il testo di un messaggio dal json (webhook)
         function getText($jsonDecoded){
             return $jsonDecoded["message"]["text"];
+        }
+        // ottenimeno dei dati dal bottone premuto (NON ULTIMATO)
+        function getCallbackData($jsonDecoded){
+            return $jsonDecoded["callback_query"]["data"];
         }
     }
 ?>
