@@ -66,22 +66,49 @@
 
             /* $response = file_get_contents($url); */
         }
-        // invio di una tastiera con bottoni
-        function sendKeyboard($chatId, $msg){
-            $keyboard = json_encode([
+
+        /* invio di una tastiera con bottoni: numero bottoni e colonne semiautomatici
+        /* argomenti della funzione: 
+            id chat,
+            array con i text dei bottoni,
+            array con le callback data dei bottoni,
+            numero di colonne desiderate
+        */
+        function sendKeyboard($chatId, $textArray, $callbackArray, $col, $msg){
+
+            $buttonNumber = count($textArray);
+            // tastiera di partenza, si presenta con una riga vuota senza bottoni
+            $keyboard = [
                 'inline_keyboard' => [
                     [
-                        [
-                        'text' => 'bottone', 'callback_data' => 'ritorno'
-                        ]
+
                     ]
                 ]
-            ]);
+            ];
+
+            //  creazione della tastera
+            for($i=1, $j=0; $i<=$buttonNumber; $i++){
+                
+                // aggiunta del bottone alla tastiera
+                $toPush = array('text' => $textArray[$i-1], 'callback_data' => $callbackArray[$i-1]);
+                array_push($keyboard["inline_keyboard"][$j], $toPush);
+
+                // nuova riga
+                if($i % $col == 0){
+                    array_push($keyboard['inline_keyboard'], array());
+                    $j++;
+                }
+            }
+
+            // encoding in json e invio della tastiera
+            $keyboardEnc = json_encode($keyboard);
+
+            file_put_contents("data.json", $keyboardEnc . "\n", FILE_APPEND);
             
             $data = [
                 'chat_id' => $chatId,
                 'text' => $msg,
-                'reply_markup' => $keyboard
+                'reply_markup' => $keyboardEnc
             ];
 
             $url = $this->setUrl("sendMessage?".http_build_query($data));

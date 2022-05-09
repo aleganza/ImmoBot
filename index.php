@@ -3,7 +3,7 @@
     require('config.php');
 
     try{
-        $ngrokUrl = "https://a20f-82-52-13-195.ngrok.io";
+        $ngrokUrl = "https://ddda-79-24-39-44.ngrok.io"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
@@ -17,22 +17,44 @@
         $msg = $jH->getText($webhookJson) !== "" ? $jH->getText($webhookJson) : "";
 
         switch($msg){
-            // se il comando non esiste, se non è un comando
-            default: {
-                if ($msg[0] == '/')
-                    $bot->sendMessage($chatId, 'Comando non esistente');
-                
-                break;
+            case '/start': {
+                $bot->sendMessage($chatId, 'Benvenuto nel bot immobiliare!');
             }
-            case '/prova': {
-                /* $bot->sendMessage($chatId, 'hai eseguito /prova'); */
-                $bot->sendKeyboard($chatId, 'bottone di prova');
+            case '/go': {
+                $textArray = array(
+                    '🤵🏻‍♂️ Proprietari', 
+                    '🏢 Immobili', 
+                    '💰 Intestazioni',
+                    '📍 Zone',
+                    '🕹 Tipologie'
+                );
+                $callbackArray = array(
+                    '0proprietari', 
+                    '1immobili', 
+                    '2intestazioni',
+                    '3zone',
+                    '4tipologie'
+                );
+                $buttonNumber = count($textArray);
+                $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Dove vuoi andare?");
                 
                 break;
             }
             case '/help': {
-                $msg = 'Comandi disponibili:'.PHP_EOL.'/help - Lista dei comandi disponibili'.PHP_EOL.'/prova - prova';
+                $msg = 'Comandi disponibili:'.PHP_EOL.'/go - Fai partire il bot'.PHP_EOL.'/help - Lista dei comandi disponibili';
                 $bot->sendMessage($chatId, $msg);
+                break;
+            }
+            case '/credit': {
+                $bot->sendMessage($chatId, 'made by Alessio Ganzarolli');
+
+                break;
+            }
+            // se il comando non esiste, se non è un comando
+            default: {
+                if ($msg[0] == '/')
+                    $bot->sendMessage($chatId, 'Comando non esistente');
+
                 break;
             }
         }
