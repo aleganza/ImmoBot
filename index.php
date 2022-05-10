@@ -3,18 +3,22 @@
     require('config.php');
 
     try{
-        $ngrokUrl = "https://ddda-79-24-39-44.ngrok.io"; // inserire url di ngrok
+        $ngrokUrl = "https://d8e7-176-242-82-219.eu.ngrok.io"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
 
-        var_dump($bot->setWebhook($ngrokUrl));
+        $bot->setWebhook($ngrokUrl);
         // ottengo array del json e l'id della chat
         $webhookJson = $jH->getWebhookJson();
         $chatId = $jH->getChatId($webhookJson);
 
         // switch case per le risposte del bot
-        $msg = $jH->getText($webhookJson) !== "" ? $jH->getText($webhookJson) : "";
+
+        $msg = $jH->getText($webhookJson);
+
+        $callback = $jH->getCallbackData($webhookJson)[0];
+        file_put_contents("data.log", $callback . "\n", FILE_APPEND);
 
         switch($msg){
             case '/start': {
@@ -29,11 +33,11 @@
                     '🕹 Tipologie'
                 );
                 $callbackArray = array(
-                    '0proprietari', 
+                    '1proprietari', 
                     '1immobili', 
-                    '2intestazioni',
-                    '3zone',
-                    '4tipologie'
+                    '1intestazioni',
+                    '1zone',
+                    '1tipologie'
                 );
                 $buttonNumber = count($textArray);
                 $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Dove vuoi andare?");

@@ -34,7 +34,9 @@
                 'url' => $ngrokUrl
             ];
 
-            $url = $this->setUrl("setWebhook?".http_build_query($data));
+            $method = "setWebhook?".http_build_query($data);
+
+            $url = $this->setUrl($method);
             fetchApi($url);
         }
         // eliminazione webhook
@@ -62,6 +64,7 @@
 
             // richiesta per inviare il messaggio
             $url = $this->setUrl("sendMessage?".http_build_query($data));
+
             fetchApi($url);
 
             /* $response = file_get_contents($url); */
@@ -103,7 +106,7 @@
             // encoding in json e invio della tastiera
             $keyboardEnc = json_encode($keyboard);
 
-            file_put_contents("data.json", $keyboardEnc . "\n", FILE_APPEND);
+            // file_put_contents("data.json", $keyboardEnc . "\n", FILE_APPEND);
             
             $data = [
                 'chat_id' => $chatId,
