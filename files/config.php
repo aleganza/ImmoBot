@@ -34,9 +34,7 @@
                 'url' => $ngrokUrl
             ];
 
-            $method = "setWebhook?".http_build_query($data);
-
-            $url = $this->setUrl($method);
+            $url = $this->setUrl("setWebhook?".http_build_query($data));
             fetchApi($url);
         }
         // eliminazione webhook
@@ -117,11 +115,37 @@
             $url = $this->setUrl("sendMessage?".http_build_query($data));
             fetchApi($url);
         }
+
+        function forceReply($chatId){
+
+            $keyboradsValue = array(
+                array("button 1","button 2"),
+                array("button 3","button 4"),
+             );
+             $replyMarkup = array(
+               'keyboard' => $keyboradsValue,
+               'force_reply' => true,
+               'selective' => true
+             );
+
+            $encodedMarkup = json_encode($replyMarkup, true);
+
+            $data = [
+                'chat_id' => $chatId, 
+                'text' => 'force reply',
+                'reply_markup' => $encodedMarkup
+            ];
+
+            // richiesta per inviare il messaggio
+            $url = $this->setUrl("sendMessage?".http_build_query($data));
+
+            fetchApi($url);
+        }
     }
 
-    // tutte le operazioni eseguibili sui json
+    // trattamento json
     class jsonHandler extends Telegram{
-        // prendi il json di una richiesta (vecchio json_handler.php)
+        // ricavo il json di una richiesta e lo ritorno decodificato in variabile php
         function getWebhookJson(){
             $json = file_get_contents("php://input");
 
@@ -129,15 +153,19 @@
 
             return json_decode($json, true);
         }
-        // prendi l'id di una chat dal json (webhook)
+        // prendo l'id chat quando arriva un messaggio
         function getChatId($jsonDecoded){
             return $jsonDecoded["message"]["chat"]["id"];
         }
-        // prendi il testo di un messaggio dal json (webhook)
+        // prendo il testo di un messaggio
         function getText($jsonDecoded){
             return $jsonDecoded["message"]["text"];
         }
-        // ottenimeno dei dati dal bottone premuto (NON ULTIMATO)
+        // prendo l'id chat quando viene premuto un bottone
+        function getCallbackChatId($jsonDecoded){
+            return $jsonDecoded["callback_query"]["message"]["chat"]["id"];
+        }
+        // prendo i dati di ritorno di un bottone
         function getCallbackData($jsonDecoded){
             return $jsonDecoded["callback_query"]["data"];
         }

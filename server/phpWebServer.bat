@@ -2,7 +2,7 @@
 
 echo php web server on port 8080
 
-cd ..
+cd ../files
 php -S localhost:8080
 
 pause
