@@ -15,6 +15,65 @@
             //return $resp;
         }
     }
+    // controlla se sono loggato
+    function checkLogged($chatId){
+        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
+        $sql = "SELECT logged
+                FROM immobot_stato
+                WHERE chatId = $chatId";
+        $rs = $db->query($sql);
+        $record = $rs->fetch_assoc();
+
+        $db->close();
+        return $record[0];
+    }
+    // setto lo stato ... e lo step
+    function setStatus($chatId, $stato, $step){
+        // aggiorno database con lo stato attuale
+        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
+        $sql = "SELECT *
+                FROM immobot_stato
+                WHERE chatId = $chatId";
+        $rs = $db->query($sql);
+        $record = $rs->fetch_assoc();
+
+        // se lo stato va creato, inserisco i dati, se va aggiornato, aggiorno lo stato
+        if($record["chatId"] == ""){
+            $sql = "INSERT INTO immobot_stato(chatId, stato, step)
+                    VALUES ($chatId, '$stato', $step)";
+        }else{
+            $sql = "UPDATE immobot_stato
+                    SET stato = '$stato', step = $step
+                    WHERE chatId = $chatId";
+        }
+        $db->query($sql);
+
+        $db->close();
+    }
+    // ricevo lo stato di una chat
+    function getStatus($chatId){
+        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
+        $sql = "SELECT *
+                FROM immobot_stato
+                WHERE chatId = $chatId";
+        $rs = $db->query($sql);
+        $record = $rs->fetch_assoc();
+
+        $db->close();
+        return $record["stato"];
+    }
+    // ricevo lo step di una chat
+    function getStep($chatId){
+        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
+        $sql = "SELECT *
+                FROM immobot_stato
+                WHERE chatId = $chatId";
+        $rs = $db->query($sql);
+        $record = $rs->fetch_assoc();
+
+        $db->close();
+        return $record["step"];
+    }
 
     // richieste al server telegram
     class Telegram{

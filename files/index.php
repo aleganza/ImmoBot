@@ -3,52 +3,16 @@
     require('config.php'); // funzioni base
     require('../assets/databaseFunctions.php'); // funzioni per database
 
-    // controlla se sono loggato
-    function checkLogged($chatId){
-        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
-        $sql = "SELECT logged
-                FROM immobot_stato
-                WHERE chatId = $chatId";
-        $rs = $db->query($sql);
-        $record = $rs->fetch_assoc();
-
-        $db->close();
-        return $record["logged"];
-    }
-    // setto lo stato ... e lo step
-    function setStatus($chatId, $stato){
-        // aggiorno database con lo stato attuale
-        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
-        $sql = "SELECT *
-                FROM immobot_stato
-                WHERE chatId = $chatId";
-        $rs = $db->query($sql);
-        $record = $rs->fetch_assoc();
-
-        // se lo stato va creato, inserisco i dati, se va aggiornato, aggiorno lo stato
-        if($record["chatId"] == ""){
-            $sql = "INSERT INTO immobot_stato(chatId, stato)
-                    VALUES ($chatId, '$stato')";
-        }else{
-            $sql = "UPDATE immobot_stato
-                    SET stato = '$stato'
-                    WHERE chatId = $chatId";
-        }
-        $db->query($sql);
-
-        $db->close();
-    }
-
     /* file_put_contents("data.log", $var . "\n", FILE_APPEND); */
 
     try{
-        $ngrokUrl = "https://b47a-79-24-39-44.ngrok.io"; // inserire url di ngrok
+        $ngrokUrl = "https://bc48-176-246-18-19.ngrok.io"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
 
         $bot->setWebhook($ngrokUrl);
-        // ottengo json dal webhook
+        // ottengo json dal webhook come variabile php
         $webhookJson = $jH->getWebhookJson();
 
         // switch case per i comandi del bot
@@ -59,20 +23,45 @@
         $callbackChatId = $jH->getCallbackChatId($webhookJson);
         $callback = $jH->getCallbackData($webhookJson);
 
+        // prendo il chatId che mi servirà, che sia recuperato da un messaggio o da una callback da bottone
+        $statusChatId = isset($chatId) ? $chatId : $callbackChatId;
+        // ricevo status e step
+        $status = getStatus($statusChatId);
+        $step = getStep($statusChatId);
+
+        /* file_put_contents("data.log", "stato: " . $status . "\n", FILE_APPEND);
+        file_put_contents("data.log", "step: " . $step . "\n", FILE_APPEND); */
+
+        if($status == "registrati"){
+            
+        }else{
+            /* file_put_contents("data.log", "non sono in register" . "\n", FILE_APPEND); */
+        }
+
+        switch($status){
+            case 'registrati': {
+                require('authentication/registrati.php');
+
+                break;
+            }
+        }
+
         switch($callback){
             // autenticazione
             case 'login': {
-                setStatus($callbackChatId, "login");
+                setStatus($callbackChatId, "login", 0);
                 
                 break;
             }
             case 'registrati': {
-                setStatus($callbackChatId, "registrati");
+                
+                setStatus($callbackChatId, "registrati", 0);
+                $bot->sendMessage($callbackChatId, "Inserisci codice fiscale");
 
                 break;
             }
             case 'amministratore': {
-                setStatus($callbackChatId, "amministratore");
+                setStatus($callbackChatId, "amministratore", 0);
                 
                 break;
             }
@@ -96,15 +85,9 @@
         }
 
         switch($command){
-            case '/prova': {
-                
-                
-
-                break;
-            }
             case '/start': {
                 // aggiorno database con lo stato attuale
-                setStatus($chatId, "start");
+                setStatus($chatId, "start", 0);
                 
                 $textArray = array(
                     'Login',
