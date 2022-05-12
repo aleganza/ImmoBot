@@ -6,7 +6,7 @@
     /* file_put_contents("data.log", $var . "\n", FILE_APPEND); */
 
     try{
-        $ngrokUrl = "https://bc48-176-246-18-19.ngrok.io"; // inserire url di ngrok
+        $ngrokUrl = "https://6f58-2-198-144-201.eu.ngrok.io"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
@@ -32,17 +32,14 @@
         /* file_put_contents("data.log", "stato: " . $status . "\n", FILE_APPEND);
         file_put_contents("data.log", "step: " . $step . "\n", FILE_APPEND); */
 
-        if($status == "registrati"){
-            
-        }else{
-            /* file_put_contents("data.log", "non sono in register" . "\n", FILE_APPEND); */
-        }
-
         switch($status){
             case 'registrati': {
                 require('authentication/registrati.php');
 
                 break;
+            }
+            case 'login': {
+
             }
         }
 
@@ -90,9 +87,9 @@
                 setStatus($chatId, "start", 0);
                 
                 $textArray = array(
-                    'Login',
-                    'Registrati',
-                    'Entra come amministratore'
+                    '🧾 Login 🧾',
+                    '📝 Registrati 📝',
+                    '🖥 Entra come amministratore 🖥'
                 );
                 $callbackArray = array(
                     'login',
@@ -107,11 +104,11 @@
             }
             case '/go': {
                 $textArray = array(
-                    '🤵🏻‍♂️ Proprietari', 
-                    '🏢 Immobili', 
-                    '💰 Intestazioni',
-                    '📍 Zone',
-                    '🕹 Tipologie'
+                    '🤵🏻‍♂️ Proprietari 🤵🏻‍♂️', 
+                    '🏢 Immobili 🏢', 
+                    '💰 Intestazioni 💰',
+                    '📍 Zone 📍',
+                    '🕹 Tipologie 🕹'
                 );
                 $callbackArray = array(
                     'proprietari', 

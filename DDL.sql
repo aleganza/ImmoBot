@@ -15,6 +15,7 @@ CREATE TABLE immobot_proprietari(
     telefono bigint not null,
     email varchar(30) not null,
     password varchar(50),
+    tempChatId bigint, -- serve per tenere conto dove inserire i dati inviati dall'utente passo passo
 
     primary key(CF)
 )
