@@ -6,7 +6,7 @@
     /* file_put_contents("data.log", $var . "\n", FILE_APPEND); */
 
     try{
-        $ngrokUrl = "https://6f58-2-198-144-201.eu.ngrok.io"; // inserire url di ngrok
+        $ngrokUrl = "https://f417-79-24-39-44.ngrok.io"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
@@ -32,21 +32,76 @@
         /* file_put_contents("data.log", "stato: " . $status . "\n", FILE_APPEND);
         file_put_contents("data.log", "step: " . $step . "\n", FILE_APPEND); */
 
-        switch($status){
-            case 'registrati': {
-                require('authentication/registrati.php');
+        switch($command){
+            case '/start': {
+                // aggiorno database con lo stato attuale
+                setStatus($chatId, "start", 0);
+                
+                $textArray = array(
+                    '🧾 Login',
+                    '📝 Registrati',
+                    '🖥 Entra come amministratore'
+                );
+                $callbackArray = array(
+                    'login',
+                    'registrati',
+                    'amministratore'
+                );
+
+                $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Benvenuto su ImmoBot!");
+
+                $db->close();
+                break;
+            }
+            case '/funzioni': {
+
+                if(checkLogged($chatId) == 1){
+
+                    $textArray = array(
+                        '🏢 Visualizza immobili',
+                        '❌ Logout',
+                        
+                    );
+                    $callbackArray = array(
+                        'immobili', 
+                        'logout'
+                    );
+                    $buttonNumber = count($textArray);
+                    $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Funzioni");
+
+                }else if(checkLogged($chatId) == 2){
+                    $bot->sendMessage($chatId, "loggato come amministratore");
+                }else{
+                    $bot->sendMessage($chatId, "non loggato");
+                }
 
                 break;
             }
-            case 'login': {
+            case '/help': {
+                $msg = 'Comandi disponibili:'.PHP_EOL.'/go - Fai partire il bot'.PHP_EOL.'/help - Lista dei comandi disponibili';
+                $bot->sendMessage($chatId, $msg);
+                break;
+            }
+            case '/credit': {
+                $bot->sendMessage($chatId, '© Alessio Ganzarolli');
 
+                break;
+            }
+            // se il comando non esiste, se non è un comando
+            default: {
+                if ($command[0] == '/')
+                    $bot->sendMessage($chatId, 'Comando non esistente');
+
+                break;
             }
         }
 
+        // bottoni premuti
         switch($callback){
             // autenticazione
             case 'login': {
                 setStatus($callbackChatId, "login", 0);
+                $bot->sendMessage($callbackChatId, "Inserisci codice fiscale");
                 
                 break;
             }
@@ -62,89 +117,27 @@
                 
                 break;
             }
-
-            // operazioni
-            case 'proprietari': {
-                $bot->sendMessage($callbackChatId, 'hai premuto proprietari');
-                
-                // check logged
-                $check = checkLogged($callbackChatId);
-                if($check != 1) 
-                    break;
-
-                break;
-            }
-            case 'immobili': {
-                $bot->sendMessage($CallbackchatId, 'hai premuto immobili');
-                
-                break;
-            }
-        }
-
-        switch($command){
-            case '/start': {
-                // aggiorno database con lo stato attuale
-                setStatus($chatId, "start", 0);
-                
-                $textArray = array(
-                    '🧾 Login 🧾',
-                    '📝 Registrati 📝',
-                    '🖥 Entra come amministratore 🖥'
-                );
-                $callbackArray = array(
-                    'login',
-                    'registrati',
-                    'amministratore'
-                );
-
-                $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Registrazione");
-
-                $db->close();
-                break;
-            }
-            case '/go': {
-                $textArray = array(
-                    '🤵🏻‍♂️ Proprietari 🤵🏻‍♂️', 
-                    '🏢 Immobili 🏢', 
-                    '💰 Intestazioni 💰',
-                    '📍 Zone 📍',
-                    '🕹 Tipologie 🕹'
-                );
-                $callbackArray = array(
-                    'proprietari', 
-                    'immobili',
-                    'intestazioni',
-                    'zone',
-                    'tipologie'
-                );
-                $buttonNumber = count($textArray);
-                $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Dove vuoi andare?");
-                
-                break;
-            }
-            case '/proprietari': {
-                $bot->sendMessage($chatId, 'te pigia proprietari');
-                $bot->sendMessage($chatId, $callback);
-                break;
-            }
-            case '/help': {
-                $msg = 'Comandi disponibili:'.PHP_EOL.'/go - Fai partire il bot'.PHP_EOL.'/help - Lista dei comandi disponibili';
-                $bot->sendMessage($chatId, $msg);
-                break;
-            }
-            case '/credit': {
-                $bot->sendMessage($chatId, 'made by Alessio Ganzarolli');
-
-                break;
-            }
-            // se il comando non esiste, se non è un comando
-            default: {
-                if ($command[0] == '/')
-                    $bot->sendMessage($chatId, 'Comando non esistente');
+            case 'logout': {
+                setLogged($callbackChatId, 0);
+                $bot->sendMessage($callbackChatId, "✅ Logout effettuato");
 
                 break;
             }
         }
+
+        switch($status){
+            case 'registrati': {
+                require('authentication/registrati.php');
+
+                break;
+            }
+            case 'login': {
+                require('authentication/login.php');
+
+                break;
+            }
+        }
+
     }catch(ErrorException $e){
         echo $e->getMessage();
     }

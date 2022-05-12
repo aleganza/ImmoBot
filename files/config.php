@@ -15,17 +15,31 @@
             //return $resp;
         }
     }
-    // controlla se sono loggato
+    /* inserisce in database il logged status
+     * 0 o NULL: non loggato
+     * 1: loggato 
+     * 2: loggato come amministratore
+     */
+    function setLogged($chatId, $log){
+        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
+        $sql = "UPDATE immobot_stato
+                SET logged = $log
+                WHERE chatId = $chatId";
+        $rs = $db->query($sql);
+
+        $db->close();
+    }
+    // controlla lo stato di log
     function checkLogged($chatId){
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
-        $sql = "SELECT logged
+        $sql = "SELECT *
                 FROM immobot_stato
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
         $record = $rs->fetch_assoc();
 
         $db->close();
-        return $record[0];
+        return $record["logged"];
     }
     // setto lo stato ... e lo step
     function setStatus($chatId, $stato, $step){
