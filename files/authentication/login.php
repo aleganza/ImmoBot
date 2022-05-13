@@ -29,6 +29,7 @@
         if($rs->num_rows != 0){
             $bot->sendMessage($statusChatId, "✅ Login avvenuto!");
             setLogged($statusChatId, 1);
+            $bot->sendMessage($statusChatId, "➡️ Ora puoi eseguire /funzioni");
         }
     }
 ?>

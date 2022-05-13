@@ -53,7 +53,7 @@
                 $db->close();
                 break;
             }
-            case '/funzioni': {
+            case '/functions': {
 
                 if(checkLogged($chatId) == 1){
 
@@ -70,9 +70,21 @@
                     $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Funzioni");
 
                 }else if(checkLogged($chatId) == 2){
-                    $bot->sendMessage($chatId, "loggato come amministratore");
+
+                    $textArray = array(
+                        '🏢 Visualizza immobili',
+                        '❌ Logout',
+                        
+                    );
+                    $callbackArray = array(
+                        'immobili', 
+                        'logout'
+                    );
+                    $buttonNumber = count($textArray);
+                    $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Funzioni");
+
                 }else{
-                    $bot->sendMessage($chatId, "non loggato");
+                    $bot->sendMessage($chatId, "❌ Non sei loggato" . PHP_EOL . "➡️ Esegui /start per autenticarti");
                 }
 
                 break;
@@ -82,8 +94,8 @@
                 $bot->sendMessage($chatId, $msg);
                 break;
             }
-            case '/credit': {
-                $bot->sendMessage($chatId, '© Alessio Ganzarolli');
+            case '/info': {
+                $bot->sendMessage($chatId, 'Progetto Bot Telegram ' . PHP_EOL . ' Classe 5°I ' . PHP_EOL .' A.S. 2021-2022' . PHP_EOL . PHP_EOL .'© Alessio Ganzarolli ');
 
                 break;
             }
@@ -114,6 +126,7 @@
             }
             case 'amministratore': {
                 setStatus($callbackChatId, "amministratore", 0);
+                $bot->sendMessage($callbackChatId, "Inserisci username");
                 
                 break;
             }
@@ -133,6 +146,11 @@
             }
             case 'login': {
                 require('authentication/login.php');
+
+                break;
+            }
+            case 'amministratore': {
+                require('authentication/amministratore.php');
 
                 break;
             }
