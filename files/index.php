@@ -3,10 +3,10 @@
     require('config.php'); // funzioni base
     require('../assets/databaseFunctions.php'); // funzioni per database
 
-    /* file_put_contents("data.log", $var . "\n", FILE_APPEND); */
+    file_put_contents("data.log", "we" . "\n", FILE_APPEND);
 
     try{
-        $ngrokUrl = "https://f417-79-24-39-44.ngrok.io"; // inserire url di ngrok
+        $ngrokUrl = "https://6cd3-79-24-39-44.ngrok.io"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
@@ -29,6 +29,11 @@
         $status = getStatus($statusChatId);
         $step = getStep($statusChatId);
 
+        // cancella ogni processo di registrazione che non è stato ultimato correttamente
+        // non lo fa se ci troviamo nello status regitrati perchè non permetterebbe la registrazione
+        if($status != "registrati")
+            removeOldReg();
+
         /* file_put_contents("data.log", "stato: " . $status . "\n", FILE_APPEND);
         file_put_contents("data.log", "step: " . $step . "\n", FILE_APPEND); */
 
@@ -48,13 +53,13 @@
                     'amministratore'
                 );
 
-                $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "Benvenuto su ImmoBot!");
+                $bot->sendKeyboard($chatId, $textArray, $callbackArray, 2, "👋 Benvenuto su ImmoBot!");
 
                 $db->close();
                 break;
             }
+            // operazioni eseguibili da loggati 
             case '/functions': {
-
                 if(checkLogged($chatId) == 1){
 
                     $textArray = array(
@@ -92,6 +97,7 @@
             case '/help': {
                 $msg = 'Comandi disponibili:'.PHP_EOL.'/go - Fai partire il bot'.PHP_EOL.'/help - Lista dei comandi disponibili';
                 $bot->sendMessage($chatId, $msg);
+
                 break;
             }
             case '/info': {
@@ -99,10 +105,10 @@
 
                 break;
             }
-            // se il comando non esiste, se non è un comando
+            // se il comando non esiste
             default: {
                 if ($command[0] == '/')
-                    $bot->sendMessage($chatId, 'Comando non esistente');
+                    $bot->sendMessage($chatId, '❌ Comando non esistente');
 
                 break;
             }

@@ -16,13 +16,13 @@
         }
     }
     /* inserisce in database il logged status
-     * 0 o NULL: non loggato
-     * 1: loggato 
-     * 2: loggato come amministratore
+     * 0 o NULL - non loggato
+     * 1 - loggato 
+     * 2 - loggato come amministratore
      */
     function setLogged($chatId, $log){
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
-        $sql = "UPDATE immobot_stato
+        $sql = "UPDATE immobiliare_stato
                 SET logged = $log
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
@@ -33,7 +33,7 @@
     function checkLogged($chatId){
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
         $sql = "SELECT *
-                FROM immobot_stato
+                FROM immobiliare_stato
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
         $record = $rs->fetch_assoc();
@@ -41,22 +41,22 @@
         $db->close();
         return $record["logged"];
     }
-    // setto lo stato ... e lo step
+    // setto lo stato e lo step
     function setStatus($chatId, $stato, $step){
         // aggiorno database con lo stato attuale
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
         $sql = "SELECT *
-                FROM immobot_stato
+                FROM immobiliare_stato
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
         $record = $rs->fetch_assoc();
 
         // se lo stato va creato, inserisco i dati, se va aggiornato, aggiorno lo stato
         if($record["chatId"] == ""){
-            $sql = "INSERT INTO immobot_stato(chatId, stato, step)
+            $sql = "INSERT INTO immobiliare_stato(chatId, stato, step)
                     VALUES ($chatId, '$stato', $step)";
         }else{
-            $sql = "UPDATE immobot_stato
+            $sql = "UPDATE immobiliare_stato
                     SET stato = '$stato', step = $step
                     WHERE chatId = $chatId";
         }
@@ -68,7 +68,7 @@
     function getStatus($chatId){
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
         $sql = "SELECT *
-                FROM immobot_stato
+                FROM immobiliare_stato
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
         $record = $rs->fetch_assoc();
@@ -80,7 +80,7 @@
     function getStep($chatId){
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
         $sql = "SELECT *
-                FROM immobot_stato
+                FROM immobiliare_stato
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
         $record = $rs->fetch_assoc();
@@ -88,10 +88,38 @@
         $db->close();
         return $record["step"];
     }
+    // elimina processi di registrazione non conclusi
+    function removeOldReg(){
+        $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
+        $sql = "SELECT *
+                FROM immobiliare_proprietari";
+        $rs = $db->query($sql);
+        $record = $rs->fetch_assoc();
+        
+        // cicla la tabella
+        while($record){
+            $tempChatId = $record["tempChatId"];
+            // cicla ogni elemento della riga
+            foreach ($record as $key => $value){
+                /* se trova una riga con almeno un elemento vuoto o null, 
+                 * quindi non è stato ultimato il processo di registrazione
+                 * per quell'utente, cancello tutta la riga
+                 */
+                if(!isset($value) || $value == null){
+                    $db->query(
+                        "DELETE FROM immobiliare_proprietari
+                        WHERE tempChatId = $tempChatId"
+                    );
+                }
+            }
+            $record = $rs->fetch_assoc();
+        }
+        $db->close();
+    }
 
     // richieste al server telegram
     class Telegram{
-        protected $tUrl; // url di telegram api
+        protected $tUrl; // url telegram api
 
         function __construct($token){
             /* $this->token = $token; */

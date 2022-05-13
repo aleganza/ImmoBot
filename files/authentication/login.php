@@ -5,7 +5,7 @@
 
     if($step == 0){
         $sql = "SELECT *
-                FROM immobot_proprietari
+                FROM immobiliare_proprietari
                 WHERE CF = '$text'";
         $rs = $db->query($sql);
 
@@ -21,7 +21,7 @@
     }
     if($step == 1){
         $sql = "SELECT *
-                FROM immobot_proprietari
+                FROM immobiliare_proprietari
                 WHERE password = '$text'";
         $rs = $db->query($sql);
 
@@ -29,7 +29,8 @@
         if($rs->num_rows != 0){
             $bot->sendMessage($statusChatId, "✅ Login avvenuto!");
             setLogged($statusChatId, 1);
-            $bot->sendMessage($statusChatId, "➡️ Ora puoi eseguire /funzioni");
+            setStatus($statusChatId, "start", 0);
+            $bot->sendMessage($statusChatId, "➡️ Ora puoi eseguire /functions");
         }
     }
 ?>
