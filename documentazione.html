@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>ImmoBot - Documentazione</title>
+    <style>
+      body {
+        background-image: url("img/wp.jpg");
+        
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        
+        background-size: cover;
+      }
+      .container.mt-5.mb-5.border{
+        background-color: rgba(255, 255, 255, 0.30);
+      }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 mb-5 p-5 border">
+
+        <h3 class="mb-3">ImmoBot - Documentazione</h3>
+
+        <p class="mb-5">Funzioni presenti nel file config.php</p>
+
+        <h4 class="mb-3">Funzioni base</h4>
+
+        <h5 class="mb-3">fetchApi()</h5>
+        <p>Funzione per l'utilizzo della libreria cURL</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">url</th>
+              <td>String</td>
+              <td>URL a cui fare la richiesta</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">setLogged()</h5>
+        <p>Inserisce in database lo stato di log</p>
+        <ul>
+          <li>0 o NULL - non loggato</li>
+          <li>1 - loggato</li>
+          <li>2 - loggato come amministratore</li>
+        </ul>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat di riferimento a cui assegnare il log</td>
+            </tr>
+            <tr>
+              <th scope="row">log</th>
+              <td>Int</td>
+              <td>Stato di log (0, 1, 2)</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">checkLogged()</h5>
+        <p>Controlla e ritorna lo stato di log</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat di riferimento da cui controllare il log</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">setStatus()</h5>
+        <p>Setta in database status e step del bot</p>
+        <p>Per esempio se un utente si sta registrando avrà come status "registrati" e come step lo step della registrazione (inserimento CF, telefono...)</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat di riferimento a cui assegnare stato e step</td>
+            </tr>
+            <tr>
+              <th scope="row">stato</th>
+              <td>String</td>
+              <td>Nome dello status</td>
+            </tr>
+            <tr>
+              <th scope="row">step</th>
+              <td>Int</td>
+              <td>Step</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getStatus()</h5>
+        <p>Controlla e ritorna lo stato di una chat</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat di riferimento da cui prelevare lo stato</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getStep()</h5>
+        <p>Controlla e ritorna lo step di uno stato di una chat</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat di riferimento da cui prelevare lo step</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">removeOldReg()</h5>
+        <p>Se viene interrotto un processo di registrazione, questa funzione, richiamata ad inizio file, lo identifica e provvede a cancellare i dati inutili rimasti in tabella</p>
+      
+        <hr class="mt-5 mb-5">
+
+        <h4 class="mb-3">Funzioni della classe Telegram</h4>
+        <p>Principali metodi da inviare a Telegram</p>
+
+        <h5 class="mb-3">Costruttore</h5>
+        <p>Costruisce la prima parte dell'URL a cui fare la richiesta</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">token</th>
+              <td>String</td>
+              <td>Token del bot</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">setUrl()</h5>
+        <p>Costruisce e ritorna l'URL a cui fare la richiesta</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">method</th>
+              <td>String</td>
+              <td>Metodo utilizzato</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">setWebhook()</h5>
+        <p>Crea un Webhook</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">ngrokUrl</th>
+              <td>String</td>
+              <td>URL di ngrok a cui attaccare il webhook</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">deleteWebhook()</h5>
+        <p>Elimina il Webhook presente</p>
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getMe()</h5>
+        <p>Ottieni le informazioni base del bot</p>
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getUpdates()</h5>
+        <p>Ottieni gli updates in arrivo</p>
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">sendMessage()</h5>
+        <p>Invia un messaggio semplice</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat a cui inviare il messaggio</td>
+            </tr>
+            <tr>
+              <th scope="row">msg</th>
+              <td>String</td>
+              <td>Corpo del messaggio</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">sendKeyboard()</h5>
+        <p>Invia una tastiera con bottoni premibili</p>
+        <p>Crea la quantita di bottoni da inviare basandosi sull'argomento textArray. Richiede il numero di colonne su cui basare la tastiera</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">chatId</th>
+              <td>Int</td>
+              <td>Id della chat a cui inviare la tastiera</td>
+            </tr>
+            <tr>
+              <th scope="row">textArray</th>
+              <td>Array</td>
+              <td>Array contenente i nomi visibili sui bottoni</td>
+            </tr>
+            <tr>
+              <th scope="row">callbackArray</th>
+              <td>Array</td>
+              <td>Array contenente i dati di return dei bottoni (callback_query)</td>
+            </tr>
+            <tr>
+              <th scope="row">col</th>
+              <td>Int</td>
+              <td>Numero di colonne della tastiera</td>
+            </tr>
+            <tr>
+              <th scope="row">msg</th>
+              <td>String</td>
+              <td>Corpo del messaggio</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h4 class="mb-3">Funzioni della classe jsonHandler</h4>
+        <p>Principali funzioni per il trattamento dei json</p>
+
+        <h5 class="mb-3">getWebhookJson()</h5>
+        <p>Prende il json e lo ritorna come variabile php</p>
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getChatId()</h5>
+        <p>Filtra l'id della chat da cui arriva il messaggio</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">jsonDecoded</th>
+              <td>Array</td>
+              <td>Array del json ricevuto</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getText()</h5>
+        <p>Filtra il testo del messaggio</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">jsonDecoded</th>
+              <td>Array</td>
+              <td>Array del json ricevuto</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <hr class="mt-5 mb-5">
+
+        <h5 class="mb-3">getCallbackChatId()</h5>
+        <p>Filtra l'id della chat da cui è stato premuto un bottone</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">jsonDecoded</th>
+              <td>Array</td>
+              <td>Array del json ricevuto</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+
+        <h5 class="mb-3">getCallbackData()</h5>
+        <p>Filtra il dato di ritorno di un bottone premuto</p>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Argomenti</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">jsonDecoded</th>
+              <td>Array</td>
+              <td>Array del json ricevuto</td>
+            </tr>
+          </tbody>
+        </table class="mb-5">
+    </div>
+</body>
+</html>

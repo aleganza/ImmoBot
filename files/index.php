@@ -3,7 +3,7 @@
     require('config.php'); // funzioni base
     require('../assets/databaseFunctions.php'); // funzioni per database
 
-    file_put_contents("data.log", "we" . "\n", FILE_APPEND);
+    /* file_put_contents("data.log", $var . "\n", FILE_APPEND); */
 
     try{
         $ngrokUrl = "https://6cd3-79-24-39-44.ngrok.io"; // inserire url di ngrok
@@ -58,17 +58,22 @@
                 $db->close();
                 break;
             }
-            // operazioni eseguibili da loggati 
+            /* operazioni eseguibili da loggati
+             * if cases:
+             * 1 - loggato come utente
+             * 2 - loggato come amministratore
+             * else - non loggato
+             */
             case '/functions': {
                 if(checkLogged($chatId) == 1){
 
                     $textArray = array(
-                        '🏢 Visualizza immobili',
+                        '🏢 Visualizza i tuoi immobili',
                         '❌ Logout',
                         
                     );
                     $callbackArray = array(
-                        'immobili', 
+                        'tuoiImmobili',
                         'logout'
                     );
                     $buttonNumber = count($textArray);
@@ -141,6 +146,11 @@
                 $bot->sendMessage($callbackChatId, "✅ Logout effettuato");
 
                 break;
+            }
+
+            // operazioni
+            case 'tuoiImmobili': {
+                $bot->sendMessage($callbackChatId, "siummone");
             }
         }
 

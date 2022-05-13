@@ -15,7 +15,7 @@
             //return $resp;
         }
     }
-    /* inserisce in database il logged status
+    /* inserisce in database lo stato di log
      * 0 o NULL - non loggato
      * 1 - loggato 
      * 2 - loggato come amministratore
@@ -130,7 +130,7 @@
             return $this->tUrl."/".$method;
         }
         // setting webhook
-        function setWebhook ($ngrokUrl){
+        function setWebhook($ngrokUrl){
             $data = [
                 'url' => $ngrokUrl
             ];
@@ -214,32 +214,6 @@
             ];
 
             $url = $this->setUrl("sendMessage?".http_build_query($data));
-            fetchApi($url);
-        }
-
-        function forceReply($chatId){
-
-            $keyboradsValue = array(
-                array("button 1","button 2"),
-                array("button 3","button 4"),
-             );
-             $replyMarkup = array(
-               'keyboard' => $keyboradsValue,
-               'force_reply' => true,
-               'selective' => true
-             );
-
-            $encodedMarkup = json_encode($replyMarkup, true);
-
-            $data = [
-                'chat_id' => $chatId, 
-                'text' => 'force reply',
-                'reply_markup' => $encodedMarkup
-            ];
-
-            // richiesta per inviare il messaggio
-            $url = $this->setUrl("sendMessage?".http_build_query($data));
-
             fetchApi($url);
         }
     }
