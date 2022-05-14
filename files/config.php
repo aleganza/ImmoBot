@@ -48,6 +48,7 @@
         $sql = "SELECT *
                 FROM immobiliare_stato
                 WHERE chatId = $chatId";
+        
         $rs = $db->query($sql);
         $record = $rs->fetch_assoc();
 
@@ -67,7 +68,7 @@
     // ricevo lo stato di una chat
     function getStatus($chatId){
         $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
-        $sql = "SELECT *
+        $sql = "SELECT * 
                 FROM immobiliare_stato
                 WHERE chatId = $chatId";
         $rs = $db->query($sql);
@@ -126,11 +127,11 @@
             $this->tUrl = "https://api.telegram.org/bot".$token; // url a cui fare le richieste
         }
         // prepara l'url di richiesta
-        function setUrl($method){
+        private function setUrl($method){
             return $this->tUrl."/".$method;
         }
         // setting webhook
-        function setWebhook($ngrokUrl){
+        public function setWebhook($ngrokUrl){
             $data = [
                 'url' => $ngrokUrl
             ];
@@ -139,22 +140,22 @@
             fetchApi($url);
         }
         // eliminazione webhook
-        function deleteWebhook(){
+        public function deleteWebhook(){
             $url = $this->setUrl("deleteWebhook");
             fetchApi($url);
         }
         // getMe
-        function getMe(){
+        public function getMe(){
             $url = $this->setUrl("getMe");
             fetchApi($url);
         }
         // getUpdates
-        function getUpdates(){
+        public function getUpdates(){
             $url = $this->setUrl("getUpdates");
             fetchApi($url);
         }
         // invio di un messaggio
-        function sendMessage($chatId, $msg){
+        public function sendMessage($chatId, $msg){
             // dati per inviare il messaggio
             $data = [
                 'chat_id' => $chatId, 
@@ -176,7 +177,7 @@
             array con le callback data dei bottoni,
             numero di colonne desiderate
         */
-        function sendKeyboard($chatId, $textArray, $callbackArray, $col, $msg){
+        public function sendKeyboard($chatId, $textArray, $callbackArray, $col, $msg){
 
             $buttonNumber = count($textArray);
             // tastiera di partenza, si presenta con una riga vuota senza bottoni

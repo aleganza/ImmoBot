@@ -42,7 +42,7 @@
         }else{
             // richiedo la credenziale
             $bot->sendMessage($statusChatId, "❌ Il codice fiscale inserito è già registrato");
-            $bot->sendMessage($statusChatId, "Inserisci codice fiscale");
+            $bot->sendMessage($statusChatId, "👇 Inserisci codice fiscale");
 
             // elimino la riga che si stava creando per il nuovo utente registrato
             $sql = "DELETE FROM immobiliare_proprietari
@@ -57,7 +57,7 @@
                 WHERE tempChatId = $statusChatId";
         $rs = $db->query($sql);
 
-        $bot->sendMessage($statusChatId, "Inserisci cognome");
+        $bot->sendMessage($statusChatId, "👇 Inserisci cognome");
         setStatus($statusChatId, "registrati", 2);
     }
     if($step == 2){
@@ -67,7 +67,7 @@
                 WHERE tempChatId = $statusChatId";
         $rs = $db->query($sql);
 
-        $bot->sendMessage($statusChatId, "Inserisci telefono");
+        $bot->sendMessage($statusChatId, "👇 Inserisci telefono");
         setStatus($statusChatId, "registrati", 3);
     }
     if($step == 3){
@@ -86,13 +86,13 @@
                     WHERE tempChatId = $statusChatId";
             $rs = $db->query($sql);
 
-            $bot->sendMessage($statusChatId, "Inserisci email");
+            $bot->sendMessage($statusChatId, "👇 Inserisci email");
             setStatus($statusChatId, "registrati", 4);
 
         }else{
             // chiudo il processo di registrazione
             $bot->sendMessage($statusChatId, "❌ Il numero di telefono inserito è già registrato");
-            $bot->sendMessage($statusChatId, "Inserisci telefono");
+            $bot->sendMessage($statusChatId, "👇 Inserisci telefono");
 
             // elimino la riga che si stava creando per il nuovo utente registrato (resetto il tutto)
             $sql = "DELETE FROM immobiliare_proprietari
@@ -114,13 +114,13 @@
                     WHERE tempChatId = $statusChatId";
             $rs = $db->query($sql);
 
-            $bot->sendMessage($statusChatId, "Inserisci password");
+            $bot->sendMessage($statusChatId, "👇 Inserisci password");
             setStatus($statusChatId, "registrati", 5);
 
         }else{
             // chiudo il processo di registrazione
             $bot->sendMessage($statusChatId, "❌ L'email inserita è già registrata");
-            $bot->sendMessage($statusChatId, "Inserisci email");
+            $bot->sendMessage($statusChatId, "👇 Inserisci email");
 
             // elimino la riga che si stava creando per il nuovo utente registrato (resetto il tutto)
             $sql = "DELETE FROM immobiliare_proprietari
@@ -135,7 +135,7 @@
                 WHERE tempChatId = $statusChatId";
         $rs = $db->query($sql);
 
-        $bot->sendMessage($statusChatId, "✅ Utente registrato!" . PHP_EOL . "Ora puoi eseguire il Login");
+        $bot->sendMessage($statusChatId, "✅ Utente registrato!" . PHP_EOL . "➡️ Ora puoi eseguire il Login");
         setStatus($statusChatId, "start", 0);
 
         // elimino tempChatId visto che non mi serve più

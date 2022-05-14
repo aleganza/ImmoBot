@@ -4,10 +4,8 @@ CREATE TABLE immobiliare_stato(
     step int, -- step: 0, 1, 2...
     expireTime date, -- probabile da togliere
     logged integer,
-    CF varchar(16),
 
-    primary key(chatId),
-    foreign key(CF) references immobiliare_proprietari(CF)
+    primary key(chatId)
 )
 
 CREATE TABLE immobiliare_proprietari(

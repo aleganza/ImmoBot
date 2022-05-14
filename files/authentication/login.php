@@ -15,12 +15,12 @@
 
         // check presenza codice fiscale
         if($rs->num_rows != 0){
-            
-            $bot->sendMessage($statusChatId, "Inserisci password");
+            $bot->sendMessage($statusChatId, "👇 Inserisci password");
             setStatus($statusChatId, "login", 1);
 
         }else{
             $bot->sendMessage($statusChatId, "❌ Codice fiscale non presente");
+            $bot->sendMessage($statusChatId, "👇 Inserisci codice fiscale");
         }
     }
     if($step == 1){
@@ -32,10 +32,12 @@
 
         // check presenza password
         if($rs->num_rows != 0){
-            $bot->sendMessage($statusChatId, "✅ Login avvenuto!");
             setLogged($statusChatId, 1);
             setStatus($statusChatId, "start", 0);
-            $bot->sendMessage($statusChatId, "➡️ Ora puoi eseguire /functions");
+            $bot->sendMessage($statusChatId, "✅ Login avvenuto!".PHP_EOL."➡️ Ora puoi eseguire /functions");
+        }else{
+            $bot->sendMessage($statusChatId, "❌ Password errata");
+            $bot->sendMessage($statusChatId, "👇 Inserisci password");
         }
     }
 ?>
