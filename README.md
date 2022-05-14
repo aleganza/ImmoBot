@@ -1,3 +1,5 @@
+![logo](/img/logo.png "logo")
+
 # ImmoBot (@ganzaImmoBot)
 
 Bot Telegram collegato al progetto di Informatica: "Agenzia Immobiliare"
