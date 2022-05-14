@@ -2,7 +2,7 @@ CREATE TABLE immobiliare_stato(
     chatId bigint,
     stato varchar(50), -- stato: login, registrati...
     step int, -- step: 0, 1, 2...
-    expireTime date, -- probabile da togliere
+    expireTime date, -- inutilizzata
     logged integer,
 
     primary key(chatId)
@@ -15,7 +15,7 @@ CREATE TABLE immobiliare_proprietari(
     telefono bigint,
     email varchar(30),
     password varchar(50),
-    tempChatId bigint, -- serve per tenere conto dove inserire i dati inviati dall'utente passo passo
+    tempChatId bigint, -- serve per tenere conto dove inserire i dati inviati dall'utente passo passo (ha uso temporaneo)
 
     primary key(CF)
 )
