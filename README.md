@@ -13,7 +13,7 @@ A.S. 2021-2022
 I file *ngrokExec.bat* e *phpWebServer.bat* servono rispettivamente per avviare ngrok sulla porta 8080 e avviare un web server incorporato sempre sulla stessa porta.
 Per avviare ngrok manualmente, eseguire il seguente codice:
 
-`diocan`
+`ngrok http <port>`
 
 ### Documentazione funzioni
 
