@@ -1,5 +1,9 @@
 <?php
 
+    /* login
+     * richiede username e password tramite il meccanismo status - step
+     */
+
     $text = $jH->getText($webhookJson);
     $db = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
 
@@ -20,6 +24,7 @@
         }
     }
     if($step == 1){
+        $text = md5($text); // codifica in hash md5 della password
         $sql = "SELECT *
                 FROM immobiliare_proprietari
                 WHERE password = '$text'";

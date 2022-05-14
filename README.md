@@ -1,12 +1,28 @@
-# coffeshop
+# ImmoBot (@ganzaImmoBot)
 
-telegram bot di prova
-ricordarsi di fare documentazione fatta bene (ogni funzione/classe spiegata)
+Bot Telegram collegato al progetto di Informatica: "Agenzia Immobiliare"
+Classe 5°I
+A.S. 2021-2022
+
+© Alessio Ganzarolli
 
 ## cartella 'server' (solo per Windows)
 
-i file *ngrokExec.bat* e *phpWebServer.bat* servono rispettivamente per avviare ngrok sulla porta 8080 e avviare un web server incorporato sempre sulla porta 8080
+i file *ngrokExec.bat* e *phpWebServer.bat* servono rispettivamente per avviare ngrok sulla porta 8080 e avviare un web server incorporato sempre sulla porta 8080.
+
+## documentazione funzioni
+
+il file *documentazione.html* fa da documentazione per le funzioni e le classi del progetto.
 
 ## da risolvere
-registrazione: se si interrompe il processo non elimina i dati vecchi inseriti
-md5 su password
+
+md5 su password (fatta ma da controllare).
+fare foreign key del cf in tabella proprietari collegata alla pk cf della tabella stati
+controllare i login se richiedono l'informazione quando è errata o non esiste
+il numero di telefono deve esser per forza un numero altrimenti lo richiede
+
+## come usare fake-webhook.php
+
+file html su classroom
+richiama in continuazione getupdates
+dababyamgussu

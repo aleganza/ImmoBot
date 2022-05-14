@@ -3,7 +3,6 @@
     /* registrazione
      * ogni informazione richiesta all'utente è rappresentato da uno step
      * ogni informazione inviata dall'utente viene registrata in database e successivamente viene aumentato lo step
-     * 
      */
 
     $text = $jH->getText($webhookJson);
@@ -72,6 +71,8 @@
         setStatus($statusChatId, "registrati", 3);
     }
     if($step == 3){
+        // controllo che il numero di telefono vada bene
+        
 
         $sql = "SELECT *
                 FROM immobiliare_proprietari
@@ -128,7 +129,7 @@
         }
     }
     if($step == 5){
-
+        $text = md5($text); // codifico in hash  md5 la password
         $sql = "UPDATE immobiliare_proprietari
                 SET password = '$text'
                 WHERE tempChatId = $statusChatId";
@@ -137,6 +138,7 @@
         $bot->sendMessage($statusChatId, "✅ Utente registrato!" . PHP_EOL . "Ora puoi eseguire il Login");
         setStatus($statusChatId, "start", 0);
 
+        // elimino tempChatId visto che non mi serve più
         $sql = "UPDATE immobiliare_proprietari
                 SET tempChatId = 0
                 WHERE tempChatId = $statusChatId";

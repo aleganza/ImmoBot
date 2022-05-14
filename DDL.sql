@@ -1,11 +1,13 @@
 CREATE TABLE immobiliare_stato(
     chatId bigint,
-    stato varchar(50), -- stato: login, proprietari, zone...
+    stato varchar(50), -- stato: login, registrati...
     step int, -- step: 0, 1, 2...
-    expireTime date,
+    expireTime date, -- probabile da togliere
     logged integer,
+    CF varchar(16),
 
-    primary key(chatId)
+    primary key(chatId),
+    foreign key(CF) references immobiliare_proprietari(CF)
 )
 
 CREATE TABLE immobiliare_proprietari(

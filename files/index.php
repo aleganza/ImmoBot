@@ -6,39 +6,39 @@
     /* file_put_contents("data.log", $var . "\n", FILE_APPEND); */
 
     try{
-        $ngrokUrl = "https://6cd3-79-24-39-44.ngrok.io"; // inserire url di ngrok
+        $ngrokUrl = "https://17eb-176-246-74-223.eu.ngrok.io/Informatica/Github/coffeshop/files/index.php"; // inserire url di ngrok
         
         $bot = new Telegram($token);
         $jH = new jsonHandler($token);
 
-        $bot->setWebhook($ngrokUrl);
-        // ottengo json dal webhook come variabile php
-        $webhookJson = $jH->getWebhookJson();
+        $bot->setWebhook($ngrokUrl); // ottengo json dal webhook come variabile php
 
-        // switch case per i comandi del bot
+        // chatId e testo (comando) di un messaggio
         $chatId = $jH->getChatId($webhookJson);
-        $command = $jH->getText($webhookJson);
+        $command = $jH->getText($webhookJson); // usato nello switch($command)
 
-        // switch case per le operazioni del bot
+        // chatId e callback_query di un bottone premuto
         $callbackChatId = $jH->getCallbackChatId($webhookJson);
-        $callback = $jH->getCallbackData($webhookJson);
+        $callback = $jH->getCallbackData($webhookJson); // usato nello switch($callback)
 
-        // prendo il chatId che mi servirà, che sia recuperato da un messaggio o da una callback da bottone
+        // prendo la chatId, che provenga da un bottone premuto o da un messaggio
         $statusChatId = isset($chatId) ? $chatId : $callbackChatId;
-        // ricevo status e step
+        // prendo status e step
         $status = getStatus($statusChatId);
         $step = getStep($statusChatId);
 
         // cancella ogni processo di registrazione che non è stato ultimato correttamente
-        // non lo fa se ci troviamo nello status regitrati perchè non permetterebbe la registrazione
+        // non lo fa se ci troviamo nello status registrati perchè significherebbe che qualcuno si sta registrando
         if($status != "registrati")
             removeOldReg();
 
         /* file_put_contents("data.log", "stato: " . $status . "\n", FILE_APPEND);
         file_put_contents("data.log", "step: " . $step . "\n", FILE_APPEND); */
 
+        // switch per i comandi
         switch($command){
-            case '/start': {
+            case '/start': { // comando principale
+
                 // aggiorno database con lo stato attuale
                 setStatus($chatId, "start", 0);
                 
@@ -82,7 +82,7 @@
                 }else if(checkLogged($chatId) == 2){
 
                     $textArray = array(
-                        '🏢 Visualizza immobili',
+                        '🏢 Popolarità zone',
                         '❌ Logout',
                         
                     );
@@ -99,19 +99,18 @@
 
                 break;
             }
-            case '/help': {
+            case '/help': { // lista dei comandi
                 $msg = 'Comandi disponibili:'.PHP_EOL.'/go - Fai partire il bot'.PHP_EOL.'/help - Lista dei comandi disponibili';
                 $bot->sendMessage($chatId, $msg);
 
                 break;
             }
-            case '/info': {
+            case '/info': { // info sul bot
                 $bot->sendMessage($chatId, 'Progetto Bot Telegram ' . PHP_EOL . ' Classe 5°I ' . PHP_EOL .' A.S. 2021-2022' . PHP_EOL . PHP_EOL .'© Alessio Ganzarolli ');
 
                 break;
             }
-            // se il comando non esiste
-            default: {
+            default: { // se il comando non esiste
                 if ($command[0] == '/')
                     $bot->sendMessage($chatId, '❌ Comando non esistente');
 
@@ -119,7 +118,12 @@
             }
         }
 
-        // bottoni premuti
+        /* // switch per i bottoni premuti. funzionamento:
+         * quando un bottone viene premuto si finisce in questo switch
+         * per ogni case setta lo stato e lo step (0 perchè è appena iniziato) di quella operazione
+         * scrive all'utente e richiede di inserire l'informazione richiesta
+         * per gli step successivi, il testimone passa allo switch($status)
+         */
         switch($callback){
             // autenticazione
             case 'login': {
@@ -129,7 +133,6 @@
                 break;
             }
             case 'registrati': {
-                
                 setStatus($callbackChatId, "registrati", 0);
                 $bot->sendMessage($callbackChatId, "Inserisci codice fiscale");
 
@@ -150,10 +153,14 @@
 
             // operazioni
             case 'tuoiImmobili': {
-                $bot->sendMessage($callbackChatId, "siummone");
+                $bot->sendMessage($callbackChatId, "da fare visualizzazione immobili");
+                
             }
         }
 
+        /* switch per il proseguimento di uno status
+         * quando si è presenti in uno stato, lo switch cicla ogni step dove richiede le rispettive credenziali
+         */
         switch($status){
             case 'registrati': {
                 require('authentication/registrati.php');
