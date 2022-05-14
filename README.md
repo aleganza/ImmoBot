@@ -1,4 +1,4 @@
-![logo](img/logo.jpg "logo")
+![logo](img/logoWider.jpg "logo")
 
 # ImmoBot (@ganzaImmoBot)
 
